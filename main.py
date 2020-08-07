@@ -5,7 +5,7 @@ from time import sleep
 import json
 import os
 
-q_num = '327448971'
+q_num = '295342639'
 rest_t = 0.5
 
 headers = {
@@ -26,7 +26,14 @@ uClient2.close()
 temp_soup = soup(temp_html, "html.parser")
 temp_header = temp_soup.h1
 
-folder_name = temp_header.get_text() + '(text version)'
+folder_name = temp_header.get_text()
+
+if folder_name[-1] == '?':
+    folder_name = folder_name[0:-1]
+
+folder_name = folder_name + ' (text version)'
+
+
 is_end = False
 
 n = 1
@@ -45,41 +52,43 @@ while is_end == False:
         author_name = author_tot['name']
         page_soup = soup(content, "html.parser")
 
-        # all kinds of replacement to fit in txt files
-        containers1 = str(page_soup).replace('<p class="ztext-empty-paragraph"><br/></p>', ' \n')
-        containers2 = containers1.replace('<p>', '    ')
+        containers = page_soup.get_text()
 
-        containers = containers2.replace('</p>', '\n').replace('<br>', '    ').replace('</br>', ' \n').replace('<br/>', '     ')
-
-        # remove <figure>
-        start_lst = []
-        end_lst = []
-        for ij in range(len(containers)):
-            if containers[ij:ij + 7] == '<figure':
-                start_lst.append(ij)
-            if containers[ij:ij + 9] == '</figure>':
-                end_lst.append(ij)
-        for ji in range(len(start_lst)):
-            containers = containers.replace(containers[start_lst[ji]:end_lst[ji]],
-                                            ' ' * len(containers[start_lst[ji]:end_lst[ji]]))
-
-        # remove <a>
-        start_lst = []
-        end_lst = []
-        for ij in range(len(containers)):
-            if containers[ij:ij + 2] == '<a':
-                start_lst.append(ij)
-            if containers[ij:ij + 4] == '</a>':
-                end_lst.append(ij)
-        for ji in range(len(start_lst)):
-            containers = containers.replace(containers[start_lst[ji]:end_lst[ji]],
-                                            ' ' * len(containers[start_lst[ji]:end_lst[ji]]))
-
-        containers = containers.replace('</figure>', ' ' * len('</figure>')).replace('<hr/>',
-                                                                                     ' ' * len('<hr/>')).replace(
-            '<blockquote>', ' ' * len('<blockquote>')).replace('</blockquote>', ' ' * len('</blockquote>')).replace(
-            '</b>', ' ').replace('<b>', '   ')
-        print(containers)
+        # # all kinds of replacement to fit in txt files
+        # containers1 = str(page_soup).replace('<p class="ztext-empty-paragraph"><br/></p>', ' \n')
+        # containers2 = containers1.replace('<p>', '    ')
+        #
+        # containers = containers2.replace('</p>', '\n').replace('<br>', '    ').replace('</br>', ' \n').replace('<br/>', '     ')
+        #
+        # # remove <figure>
+        # start_lst = []
+        # end_lst = []
+        # for ij in range(len(containers)):
+        #     if containers[ij:ij + 7] == '<figure':
+        #         start_lst.append(ij)
+        #     if containers[ij:ij + 9] == '</figure>':
+        #         end_lst.append(ij)
+        # for ji in range(len(start_lst)):
+        #     containers = containers.replace(containers[start_lst[ji]:end_lst[ji]],
+        #                                     ' ' * len(containers[start_lst[ji]:end_lst[ji]]))
+        #
+        # # remove <a>
+        # start_lst = []
+        # end_lst = []
+        # for ij in range(len(containers)):
+        #     if containers[ij:ij + 2] == '<a':
+        #         start_lst.append(ij)
+        #     if containers[ij:ij + 4] == '</a>':
+        #         end_lst.append(ij)
+        # for ji in range(len(start_lst)):
+        #     containers = containers.replace(containers[start_lst[ji]:end_lst[ji]],
+        #                                     ' ' * len(containers[start_lst[ji]:end_lst[ji]]))
+        #
+        # containers = containers.replace('</figure>', ' ' * len('</figure>')).replace('<hr/>',
+        #                                                                              ' ' * len('<hr/>')).replace(
+        #     '<blockquote>', ' ' * len('<blockquote>')).replace('</blockquote>', ' ' * len('</blockquote>')).replace(
+        #     '</b>', ' ').replace('<b>', '   ')
+        # print(containers)
 
         # img_links = []
         # for j in containers:
