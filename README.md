@@ -5,5 +5,4 @@ The answers from different users shall be labelled in order and written into a .
 
 The unnecessary part of the html files, such as figures, images, videos, etc., shall be removed for a neat view. 
 
-By Klaus Song \n
-2020.8.7
+By Klaus Song, 2020.8.7
